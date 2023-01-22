@@ -41,33 +41,5 @@ for(let link of links){
 
 
 
-  const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
-
-  function generateTitleLinks(){
-    /* remove contents of titleList */
-    const titleList = document.querySelector('.titles');
-    titleList.innerHTML = ''
-    /* for each article */
-    const articles = document.querySelectorAll('.post');
-    for(let article of articles){
-      article.
-    }
-    /* get the article id */
-    const.articleId = article.getAttribute('id');
-    console.log(articleId)
-    /* find the title element */
-    /*const articleTitle = article.querySelector(optTitleSelector).innerHTML;*/
-    const articleTitleElement = article.querySelector('.post-title');
-    /* get the title from the title element */
-    const articleTitle = articleTitleElement.innerHTML;
-    /* create HTML of the link */
-
-    /* insert link into titleList */
-
-  }
-
-generateTitleLinks();
-
+  
 }
