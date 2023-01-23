@@ -43,10 +43,13 @@
     
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector/*'.titles'ul*/);
-    titleList.innerHTML = ''
-    
+    titleList.innerHTML = '';
+    /* find all the articles and save them to variable: articles */
     /* for each article */
     const articles = document.querySelectorAll(/*'.post'<article> <h3> <p> <div>*/optArticleSelector);
+
+    let html = '';
+
     for(let article of articles){
     
     /* get the article id */
@@ -63,15 +66,15 @@
     const linkHTML =
         '<li><a href="#' + articleId + '"<span>' + articleTitle + "</span></a></li>";
     
-    /* insert link into titleList */
-    titleList.innerHTML = titleList.innerHTML + linkHTML;
+     /* insert link into html variable */
+     html = html + linkHTML;
     }
+    titleList.innerHTML = html;
   }
 generateTitleLinks();
 const links = document.querySelectorAll(".titles a");
-
+console.log(links)
   for (let link of links) {
     link.addEventListener("click", titleClickHandler);
-  
   }
 }
