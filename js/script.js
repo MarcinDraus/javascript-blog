@@ -38,8 +38,8 @@ console.log('Link was clicked!', event);
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles';
 
-  function generateTitleLinks() {
-    
+  
+  const generateTitleLinks = function () {
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
     titleList.innerHTML = '';
