@@ -1,5 +1,9 @@
 'use strict';
-{
+  const optArticleSelector = '.post',
+  optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles';
+ 
+
 const titleClickHandler = function(event){
 event.preventDefault();
 const clickedElement = this;
@@ -34,18 +38,15 @@ console.log('Link was clicked!', event);
   targetArticle.classList.add('active');
 }
 
-  const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
- 
+
   
-  const generateTitleLinks = function () {
+  const generateTitleLinks = function (selector = '') {
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
     titleList.innerHTML = '';
     /* find all the articles and save them to variable: articles */
     /* for each article */
-    const articles = document.querySelectorAll(optArticleSelector);
+    const articles = document.querySelectorAll(optArticleSelector + selector);
 
     let html = '';
 
@@ -108,6 +109,7 @@ const generateTags = function (){
     wrapper.innerHTML = html;
   /* END LOOP: for every article: */
   }
+
 }
 generateTags();
 
@@ -116,18 +118,18 @@ generateTags();
   /* prevent default action for this event */
   event.preventDefault();
   /* make new constant named "clickedElement" and give it the value of "this" */
-  const ClickedElement = this;
+  const clickedElement = this;
   /* make a new constant "href" and read the attribute "href" of the clicked element */
-  const hrefSelector = clickedElement.getAttribute('href');
+  const href = clickedElement.getAttribute('href');
   /* make a new constant "tag" and extract tag from the "href" constant */
-  const tagSelector  = hrefSelector.replace('#tag-', ''); /*nie rozumiem skąd ta komenda- zamienia co? na co? co zastepuje*/
+  const tag = href.replace('#tag-', ''); /*nie rozumiem skąd ta komenda- zamienia co? na co? co zastepuje*/
   /* find all tag links with class active */
   const allTagsLinks = document.querySelectorAll('a.active[href^="#tag-"]')/*gdzie w kodzie są linki active,chyba  dopiero jak klikne to pojawia sie active*/
   /* START LOOP: for each active tag link */
   for(let allTagsLink of allTagsLinks){
     console.log(allTagsLinks, 'allTagsLinks')
     /* remove class active */
-    allTagsLinks.classList.remove("active");
+    allTagsLink.classList.remove("active");
   /* END LOOP: for each active tag link */
   }
   /* find all tag links with "href" attribute equal to the "href" constant */
@@ -135,7 +137,7 @@ generateTags();
   /* START LOOP: for each found tag link */
   for(let tagLinkHref of tagsLinksHref ){
     /* add class active */
-    tagsLinksHref.classList.add("active")
+    tagLinkHref.classList.add("active")
   /* END LOOP: for each found tag link */
  }
   /* execute function "generateTitleLinks" with article selector as argument */
@@ -144,14 +146,16 @@ generateTags();
 
  const addClickListenersToTags = function(){
   /* find all links to tags */
+  const links = document.querySelectorAll('.list.list-horizontal a')
 
   /* START LOOP: for each link */
-
+  for(const link of links){
     /* add tagClickHandler as event listener for that link */
+    link.addEventListener('click',tagClickHandler);
+  }
 
-  /* END LOOP: for each link */
-}
+  }
+
+
 
 addClickListenersToTags();
-
-}
