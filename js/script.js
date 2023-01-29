@@ -1,3 +1,4 @@
+{
 'use strict';
   const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
@@ -229,3 +230,4 @@ const addClickListenersToAuthors = function(){
   }
 }
 addClickListenersToAuthors();
+}
