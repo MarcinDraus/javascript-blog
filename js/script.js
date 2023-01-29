@@ -98,7 +98,7 @@ const generateTags = function (){
     for(let tag of articleTagsArray){
       /* generate HTML of the link */
     console.log(tag)  
-    const tagHtml = '<li><a href="#tag-' + tag +'">' + tag + '</a></li>'; /*dlaczego 2x +tag+ */
+    const tagHtml = '<li><a href="#tag-' + tag +'">' + tag + '</a></li>';
       /* add generated code to html variable */
     html = html + ' ' + tagHtml;
     console.log(html);
@@ -113,7 +113,6 @@ const generateTags = function (){
 }
 generateTags();
 
-/*co robi ten modul*/
  const tagClickHandler = function(event){
   /* prevent default action for this event */
   event.preventDefault();
@@ -122,7 +121,7 @@ generateTags();
   /* make a new constant "href" and read the attribute "href" of the clicked element */
   const href = clickedElement.getAttribute('href');
   /* make a new constant "tag" and extract tag from the "href" constant */
-  const tag = href.replace('#tag-', ''); /*nie rozumiem skąd ta komenda- zamienia co? na co? co zastepuje*/
+  const tag = href.replace('#tag-', ''); 
   /* find all tag links with class active */
   const allTagsLinks = document.querySelectorAll('a.active[href^="#tag-"]')/*gdzie w kodzie są linki active,chyba  dopiero jak klikne to pojawia sie active*/
   /* START LOOP: for each active tag link */
@@ -156,6 +155,41 @@ generateTags();
 
   }
 
-
-
 addClickListenersToTags();
+
+const optArticleAuthorSelector = '.post-author';
+const generateAuthors = function(){
+const articles = document.querySelectorAll(optArticleSelector/*.post*/)
+
+  /* START LOOP: for every article: */
+  for(let article of articles) {
+
+  /* find tags wrapper */
+  const authorWrapper = article.querySelector(optArticleAuthorSelector)
+
+  /* make html variable with empty string */
+  let html = " ";
+
+  /* get tags from data-author attribute */
+  const articleAuthor = article.getAttribute('data-author');
+  console.log(articleAuthor)
+
+  /* generate HTML of the link */
+  const authorHtml = '<p href="#tag-' + articleAuthor + '">' + articleAuthor + '</p>';
+
+  /* add generated code to html variable */
+  html = html + ' ' + authorHtml;
+    console.log(html);
+  
+  /* insert HTML of all the links into the tags wrapper */
+  authorWrapper.innerHTML = html;
+  /* END LOOP: for every article: */
+  }
+}
+generateAuthors();
+
+const authorClickHandle = function(event){
+
+
+  
+}
