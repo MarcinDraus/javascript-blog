@@ -5,7 +5,7 @@ const templates = {
   articleTag: Handlebars.compile(document.querySelector('#template-article-tag').innerHTML),
   articleAuthor: Handlebars.compile(document.querySelector('#template-article-author').innerHTML),
   tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
-  
+  authorCloudLink: Handlebars.compile(document.querySelector('#template-author-cloud-link').innerHTML),
 };
   const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
@@ -127,7 +127,7 @@ const generateTags = function (){
     /* find tags wrapper */
   const wrapper = article.querySelector(optArticleTagsSelector/*.post-tags .list*/)
     /* make html variable with empty string */
-  let html = " ";
+  //let html = " ";
     /* get tags from data-tags attribute */
     const articleTags = article.getAttribute('data-tags');
     console.log(articleTags)
@@ -253,23 +253,18 @@ addClickListenersToTags();
 const generateAuthors = function(){
 
   /* [NEW] create a new variable allAuthors with an empty array */
- 
-   //let allAuthors = {};
+  let allAuthors = {};
 
 const articles = document.querySelectorAll(optArticleSelector/*.post*/)
-
+/* make html variable with empty string */
+  let html = " ";
   /* START LOOP: for every article: */
   for(let article of articles) {
-
   /* find tags wrapper */
   const authorWrapper = article.querySelector(optArticleAuthorSelector)
-
-  /* make html variable with empty string */
-  let html = " ";
-
   /* get tags from data-author attribute */
   const articleAuthor = article.getAttribute('data-author');
-  console.log(articleAuthor)
+  console.log('articleAuthor',articleAuthor)
 
   /*generate HTML of the link */
   //const authorHtml = '<a href="#tagAuthor-' + articleAuthor + '">' + articleAuthor + '</a>';
@@ -278,14 +273,49 @@ const articles = document.querySelectorAll(optArticleSelector/*.post*/)
   const linkHTML = templates.articleAuthor(linkHTMLData);
 
   /* add generated code to html variable */
-  html = html + ' ' + linkHTML;
-    console.log(html);
+ // html = html + ' ' + linkHTML;
   
+  /* [NEW] check if this link is NOT already in allTags */
+  if (!allAuthors[articleAuthor]) {
+    /* [NEW] add tag to allTags object */
+    allAuthors[articleAuthor] = 1;
+    /* add generated code to html variable */
+    html = html + " " + linkHTML;
+        } else {
+    allAuthors[articleAuthor]++;
+    }
   /* insert HTML of all the links into the tags wrapper */
   authorWrapper.innerHTML = html;
 
   /* END LOOP: for every article: */
   }
+    /* [NEW] find list of tags in right column */
+    const authorList = document.querySelector(optAuthorsListSelector/*'.list.authors'*/);
+    //authorList.innerHTML = html
+     //[> [NEW] create variable for all links HTML code <]
+    // let allAuthorsHTML = "";
+     const allTagsData = {tags: []};
+     //[> [NEW] START LOOP: for each tag in allTags: <]
+      for (let author in allAuthors) {
+        //[> [NEW] generate code of a link and add it to allTagsHTML <]
+        /*const authorLinkHTML =
+          '<li><a href="#tagAuthor-' +
+          author +
+          '"><span>' +
+          author +
+          " (" +
+          allAuthors[author] +
+          ")" +
+          "</span></a></li>";*/
+          allTagsData.tags.push({
+            tag: author,
+            count: allAuthors[author],
+            });
+          //allAuthorsHTML += /*authorLinkHTML;*/templates.authorCloudLink(allTagsData)
+        //[> [NEW] END LOOP: for each tag in allTags: <]
+      }
+      //[>[NEW] add HTML from allTagsHTML to tagList <]
+      authorList.innerHTML =/* allAuthorsHTML;*/templates.authorCloudLink(allTagsData)
 }
 generateAuthors();
 
@@ -320,7 +350,7 @@ const authorClickHandler = function(event){
   }
   
   const addClickListenersToAuthors = function(){
-    const linksAuthors = document.querySelectorAll('.post-author a')
+    const linksAuthors = document.querySelectorAll(/*'.post-author a'*/'a[href^="#tagAuthor-"]')
   
     /* START LOOP: for each link */
     for(const linkAuthor of linksAuthors){
@@ -479,82 +509,82 @@ const authorClickHandler = function(event){
   // addClickListenersToTags2();
   
 
- const generateAutors2 = function(){
-//const optAuthorsListSelector = '.list.authors';
- /* [NEW] create a new variable allAuthors with an empty array */
- let allAuthors = {};
-/* find all articles */
-const articles = document.querySelectorAll(optArticleSelector);
-/* make html variable with empty string */
- let html = "";
-/* START LOOP: for every article: */
- for (let article of articles) {
-   /* get tags from data-tags attribute */
-   const articleAuthor = article.getAttribute('data-author');
-   console.log('articleAuthor',articleAuthor);
+//  const generateAutors2 = function(){
+// //const optAuthorsListSelector = '.list.authors';
+//  /* [NEW] create a new variable allAuthors with an empty array */
+//  let allAuthors = {};
+// /* find all articles */
+// const articles = document.querySelectorAll(optArticleSelector);
+// /* make html variable with empty string */
+//  let html = "";
+// /* START LOOP: for every article: */
+//  for (let article of articles) {
+//    /* get tags from data-tags attribute */
+//    const articleAuthor = article.getAttribute('data-author');
+//    console.log('articleAuthor',articleAuthor);
  
-   /* generate HTML of the link */
-   const authorHtml = '<a href="#tagAuthor-' + articleAuthor + '">' + articleAuthor + '</a>';
-   console.log('authorHtml',authorHtml);
-   /* add generated code to html variable */
-   html = html + ' ' + authorHtml;
-     console.log(html);
+//    /* generate HTML of the link */
+//    //const authorHtml = '<a href="#tagAuthor-' + articleAuthor + '">' + articleAuthor + '</a>';
+   
+//    /* add generated code to html variable */
+//    html = html + ' ' + authorHtml;
+//      console.log(html);
      
-   /* [NEW] check if this link is NOT already in allTags */
-   if (!allAuthors[articleAuthor]) {
-    /* [NEW] add tag to allTags object */
-    allAuthors[articleAuthor] = 1;
-    html = html + " " + authorHtml;
-    /* add generated code to html variable */
-    } else {
-    allAuthors[articleAuthor]++;
-    }
-  /* END LOOP: for each tag */
-  }
-  /* [NEW] find list of tags in right column */
-  const authorList = document.querySelector(optAuthorsListSelector/*'.list.authors'*/);
-  //authorList.innerHTML = html
-   //[> [NEW] create variable for all links HTML code <]
-   let allAuthorsHTML = "";
-   //[> [NEW] START LOOP: for each tag in allTags: <]
-    for (let author in allAuthors) {
-      //[> [NEW] generate code of a link and add it to allTagsHTML <]
-      const authorLinkHTML =
-        '<li><a href="#tagAuthor-' +
-        author +
-        '"><span>' +
-        author +
-        " (" +
-        allAuthors[author] +
-        ")" +
-        "</span></a></li>";
-        allAuthorsHTML += authorLinkHTML;
-      //[> [NEW] END LOOP: for each tag in allTags: <]
-    }
-    //[>[NEW] add HTML from allTagsHTML to tagList <]
-    authorList.innerHTML = allAuthorsHTML;
-  }
-  generateAutors2();
+//    /* [NEW] check if this link is NOT already in allTags */
+//    if (!allAuthors[articleAuthor]) {
+//     /* [NEW] add tag to allTags object */
+//     allAuthors[articleAuthor] = 1;
+//     /* add generated code to html variable */
+//     html = html + " " + authorHtml;
+//         } else {
+//     allAuthors[articleAuthor]++;
+//     }
   
-const authorClickHandler2 = function (event){
-event.preventDefault();
-const clickedElement = this;
-const href = clickedElement.getAttribute('href');
-const tagAuthor = href.replace('#tagAuthor-', '');
-const allAuthorLinks = document.querySelectorAll('a.active[href^="#tagAuthor-"]')
-    for(let allAuthorLink of allAuthorLinks){
-      allAuthorLink.classList.remove("active");
-    }
-  const authorLinksHref = document.querySelectorAll('a[href="' + href + '"]');
-    for(let authorLinkHref of authorLinksHref){
-      authorLinkHref.classList.add("active");
-    }
-generateTitleLinks('[data-author="' + tagAuthor + '"]');
-}
-const addClickListenersToAuthors2 = function(){
-const authorlinks = document.querySelectorAll('.list.authors a');
-  for(let authorlink of authorlinks){
-    authorlink.addEventListener('click', authorClickHandler2);
-  }
-};
-addClickListenersToAuthors2();
+//   }
+//   /* [NEW] find list of tags in right column */
+//   const authorList = document.querySelector(optAuthorsListSelector/*'.list.authors'*/);
+//   //authorList.innerHTML = html
+//    //[> [NEW] create variable for all links HTML code <]
+//    let allAuthorsHTML = "";
+//    //[> [NEW] START LOOP: for each tag in allTags: <]
+//     for (let author in allAuthors) {
+//       //[> [NEW] generate code of a link and add it to allTagsHTML <]
+//       const authorLinkHTML =
+//         '<li><a href="#tagAuthor-' +
+//         author +
+//         '"><span>' +
+//         author +
+//         " (" +
+//         allAuthors[author] +
+//         ")" +
+//         "</span></a></li>";
+//         allAuthorsHTML += authorLinkHTML;
+//       //[> [NEW] END LOOP: for each tag in allTags: <]
+//     }
+//     //[>[NEW] add HTML from allTagsHTML to tagList <]
+//     authorList.innerHTML = allAuthorsHTML;
+//   }
+//   generateAutors2();
+  
+// const authorClickHandler2 = function (event){
+// event.preventDefault();
+// const clickedElement = this;
+// const href = clickedElement.getAttribute('href');
+// const tagAuthor = href.replace('#tagAuthor-', '');
+// const allAuthorLinks = document.querySelectorAll('a.active[href^="#tagAuthor-"]')
+//     for(let allAuthorLink of allAuthorLinks){
+//       allAuthorLink.classList.remove("active");
+//     }
+//   const authorLinksHref = document.querySelectorAll('a[href="' + href + '"]');
+//     for(let authorLinkHref of authorLinksHref){
+//       authorLinkHref.classList.add("active");
+//     }
+// generateTitleLinks('[data-author="' + tagAuthor + '"]');
+// }
+// const addClickListenersToAuthors2 = function(){
+// const authorlinks = document.querySelectorAll('.list.authors a');
+//   for(let authorlink of authorlinks){
+//     authorlink.addEventListener('click', authorClickHandler2);
+//   }
+// };
+// addClickListenersToAuthors2();
